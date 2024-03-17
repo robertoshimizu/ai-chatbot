@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 import { IconSpinner } from './ui/icons'
+import { Social } from './social-auth'
 
 export default function LoginForm() {
   const [result, dispatch] = useFormState(authenticate, undefined)
@@ -67,6 +68,7 @@ export default function LoginForm() {
           </div>
         </div>
         <LoginButton />
+        <Social />
       </div>
 
       <Link
