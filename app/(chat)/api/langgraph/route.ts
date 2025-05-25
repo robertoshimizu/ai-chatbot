@@ -23,7 +23,9 @@ import { differenceInSeconds } from 'date-fns';
 import { ChatSDKError } from '@/lib/errors';
 
 import { Client } from '@langchain/langgraph-sdk';
-import { LangGraphAdapter } from '@/lib/adapters/LangGraphAdapter';
+import { LangGraphAdapter } from '@/lib/langgraph_adapter';
+import { generateUUID, getMostRecentUserMessage } from '@/lib/langgraph_adapter/utils'
+
 
 export const maxDuration = 60;
 
@@ -123,20 +125,25 @@ export async function POST(request: Request) {
       ],
     });
 
+    console.log('messages', messages);
+
+      // @ts-expect-error: todo add type conversion from DBMessage[] to UIMessage[]
+    const userMessage = getMostRecentUserMessage(messages)
+
     try {
       const client = new Client({
         apiUrl: process.env.LANGGRAPH_API_URL,
         apiKey: process.env.LANGGRAPH_API_KEY,
       });
 
-      console.log('client', client);
+      //console.log('client', client);
 
       // get default assistant
       const assistants = await client.assistants.search();
       //console.log(assistants)
-      let assistant = assistants.find((a) => a.graph_id === 'researcher');
+      let assistant = assistants.find((a) => a.graph_id === 'react_agent');
       if (!assistant) {
-        assistant = await client.assistants.create({ graphId: 'researcher' });
+        assistant = await client.assistants.create({ graphId: 'react_agent' });
         // throw new Error('No assistant found')
       }
       // create thread
