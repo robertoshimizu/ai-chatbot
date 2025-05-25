@@ -58,6 +58,7 @@ export function Chat({
     experimental_resume,
     data,
   } = useChat({
+    api: '/api/langgraph',
     id,
     initialMessages,
     experimental_throttle: 100,
