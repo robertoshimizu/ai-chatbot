@@ -141,11 +141,13 @@ export async function POST(request: Request) {
       // get default assistant
       const assistants = await client.assistants.search();
       //console.log(assistants)
-      let assistant = assistants.find((a) => a.graph_id === 'react_agent');
+      let assistant = assistants.find((a) => a.graph_id === 'reactAgent');
       if (!assistant) {
-        assistant = await client.assistants.create({ graphId: 'react_agent' });
+        assistant = await client.assistants.create({ graphId: 'reactAgent' });
         // throw new Error('No assistant found')
       }
+
+      console.log('assistant', assistant);
       // create thread
       const thread = await client.threads.create();
 
